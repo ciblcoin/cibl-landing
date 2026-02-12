@@ -1,3 +1,62 @@
+"use client"; // این خط را در ابتدای فایل اضافه کنید
+
+import React, { useEffect, useState } from 'react';
+import { supabase } from '@/services/supabaseClient'; // فایل کلاینت را باید در پوشه services بسازید
+
+// ... بقیه ایمپورت‌ها ...
+
+export default function LandingPage() {
+  const [stats, setStats] = useState({ totalPlayers: 0, totalVolume: 0, liveDuels: 0 });
+
+  useEffect(() => {
+    const fetchStats = async () => {
+      // دریافت تعداد کل بازیکنان
+      const { count: users } = await supabase.from('profiles').select('*', { count: 'exact', head: true });
+      
+      // دریافت مجموع مبالغ شرط‌بندی شده
+      const { data: duels } = await supabase.from('duels').select('amount');
+      const volume = duels?.reduce((acc, curr) => acc + Number(curr.amount), 0) || 0;
+
+      setStats({
+        totalPlayers: users || 0,
+        totalVolume: volume,
+        liveDuels: Math.floor(Math.random() * 10) + 2 // شبیه‌سازی دوئل‌های زنده
+      });
+    };
+
+    fetchStats();
+    const interval = setInterval(fetchStats, 30000); // آپدیت هر ۳۰ ثانیه
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <main>
+      {/* Hero Section ... */}
+
+      {/* Stats Bar */}
+      <div className="bg-slate-900/80 border-y border-slate-800 py-8 px-6">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          <div>
+            <div className="text-4xl font-black text-white">{stats.totalPlayers}</div>
+            <div className="text-slate-500 text-sm uppercase tracking-widest mt-1">Active Degens</div>
+          </div>
+          <div>
+            <div className="text-4xl font-black text-[#FFD700] neon-glow">${stats.totalVolume.toLocaleString()}</div>
+            <div className="text-slate-500 text-sm uppercase tracking-widest mt-1">Total Volume</div>
+          </div>
+          <div>
+            <div className="text-4xl font-black text-green-500">{stats.liveDuels}</div>
+            <div className="text-slate-500 text-sm uppercase tracking-widest mt-1">Duels Running Now</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Features Grid ... */}
+    </main>
+  );
+}
+
+
 import React from 'react';
 import { Download, Sword, Shield, Zap, TrendingUp } from 'lucide-react';
 
