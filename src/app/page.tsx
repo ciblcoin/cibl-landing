@@ -125,7 +125,13 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="border-t border-slate-800 py-10 text-center text-slate-600 text-sm">
-        © 2024 CiBL Protocol. Built on Solana.
+        <p>© 2024 CiBL Protocol. Built on Solana.</p>
+        <p className="mt-3 text-slate-700 text-xs">
+          Recommended Tools:{' '}
+          <a href="https://www.editpdfree.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-yellow-400 transition">EditPDFree - Free Online PDF Editor</a>
+          {' '}&middot;{' '}
+          <a href="https://www.calcufly.com" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-yellow-400 transition">CalcuFly - 600+ Free Online Calculators</a>
+        </p>
       </footer>
     </main>
   );
